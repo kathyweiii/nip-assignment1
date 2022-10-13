@@ -1,0 +1,4 @@
+beautifulsoup4==4.11.1
+requests==2.25.1
+snownlp==0.12.3
+streamlit==1.12.2
