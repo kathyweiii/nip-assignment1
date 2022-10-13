@@ -59,38 +59,38 @@ def get_title(date, asked_number, asked_push_num = 0):
 today = time.strftime("%m/%d").lstrip('0')
 
 st.title('PTT 八卦版 貼文數搜尋引擎') 
-menu = ['Sentiment Analysis', 'NLP Pipeline']
-choice = st.sidebar.selectbox('Menu', menu)
+# menu = ['Sentiment Analysis', 'NLP Pipeline']
+# choice = st.sidebar.selectbox('Menu', menu)
 
-if choice == 'Sentiment Analysis':
-    st.write('Sentiment Analysis')
 
-    with st.form(key='nlpForm'):
-        asked_num =  st.slider('欲搜尋之篇數', 0, 100, 5,5)
-        asked_push_num = st.slider('只顯示多少推文數以上之文章',0 ,99, 10,10)
-        
-        submit_button = st.form_submit_button(label='Analyze')
+st.write('可以得知最新的文章心情！')
 
-        if submit_button:
-            with st.spinner('Wait for it...'):
-                titles = get_title(today, asked_num, asked_push_num)
-                values = []
-                for t in titles:
-                    values.append(SnowNLP(t).sentiments)
-                ave = sum(values) / len(titles)
-            st.success('Done!')
-            # st.info('Result')
-            st.write('平均情感分數 = {:.2f}'.format(ave))
-            if ave > 0.6:
-                st.markdown('ptt是正向的 :smiley: ')
-                st.balloons()
-            elif (ave > 0.4) and (ave <= 0.6):
-                st.markdown('ptt是中立 😐 ')
-            else: 
-                st.markdown('ptt是負面的 :angry: ')
-                st.snow()
-            for i in range(len(titles)):
-                st.write('{} : sentiment={:.2f}'.format(titles[i], values[i]))
+with st.form(key='nlpForm'):
+    asked_num =  st.slider('欲搜尋之篇數', 0, 100, 5,5)
+    asked_push_num = st.slider('只顯示多少推文數以上之文章',0 ,99, 10,10)
+    
+    submit_button = st.form_submit_button(label='Analyze')
+
+    if submit_button:
+        with st.spinner('Wait for it...'):
+            titles = get_title(today, asked_num, asked_push_num)
+            values = []
+            for t in titles:
+                values.append(SnowNLP(t).sentiments)
+            ave = sum(values) / len(titles)
+        st.success('Done!')
+        # st.info('Result')
+        st.write('平均情感分數 = {:.2f}'.format(ave))
+        if ave > 0.6:
+            st.markdown('ptt最近是正向的 :smiley: ')
+            st.balloons()
+        elif (ave > 0.4) and (ave <= 0.6):
+            st.markdown('ptt最近是中立 😐 ')
+        else: 
+            st.markdown('ptt最近是負面的 :angry: ')
+            st.snow()
+        for i in range(len(titles)):
+            st.write('{} : sentiment={:.2f}'.format(titles[i], values[i]))
 
 
     
